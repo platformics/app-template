@@ -9,3 +9,18 @@ By default, argo will deploy whatever is at the third level, that is, microservi
 Nothing prevents you from pointing your project to the argo directly by creating an application for it in the argocd gui itself. This template is if you want to isolate the application manifests.
 
 Remembering that it will only deploy what is in the main branch.
+
+```bash
+❯ tree
+.
+├── LICENSE
+├── namespaces
+│   ├── proj1
+│   │   ├── microservice1
+│   │   │   └── README.md
+│   │   └── microservice2
+│   │       └── README.md
+│   └── proj2
+│       └── README.md
+└── README.md
+```
