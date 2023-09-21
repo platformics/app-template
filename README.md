@@ -1,6 +1,6 @@
 # App-template
 
-Inside argo folder we need an aplicationset and aplications to config this repo template.
+Inside argo folder we need an aplicationset and aplications to config this repo template. It's necessary change the url where this repo is forked.
 
 Inside the namespaces folder, we will have different projects that can have different manifests and charts.
 
