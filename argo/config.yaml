@@ -1,0 +1,49 @@
+### Aqui vamos colocar como será a configuração deste repositório
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: apps
+  namespace: argo-cd
+spec:
+  generators:
+  - git:
+      repoURL: "https://gitlab.com/XXX/XXX/XXX.git" #Is this repo https url
+      revision: main
+      directories:
+      - path: 'namespaces/*/*'
+  template:
+    metadata:
+      name: '{{path[1]}}-{{path[2]}}'
+    spec:
+      project: apps
+      source:
+        repoURL: "https://gitlab.com/XXX/XXX/XXX.git" #Is this repo https url
+        targetRevision: main
+        path: 'namespaces/{{path[1]}}/{{path[2]}}/'
+      destination:
+        name: in-cluster
+        namespace: '{{path[1]}}'
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
+        managedNamespaceMetadata:
+          labels:
+            istio-injection: enabled
+        syncOptions:
+        - CreateNamespace=true
+        - Validate=false
+        - CreateNamespace=true
+        - PrunePropagationPolicy=foreground
+        - PruneLast=true
+        - RespectIgnoreDifferences=true
+      ignoreDifferences:
+        - kind: ValidatingWebhookConfiguration
+          group: admissionregistration.k8s.io
+          jqPathExpressions:
+            - '.webhooks[]?.failurePolicy'
+            - '.webhooks[]?.clientConfig.caBundle'
+        - kind: MutatingWebhookConfiguration
+          group: admissionregistration.k8s.io
+          jqPathExpressions:
+            - '.webhooks[]?.clientConfig.caBundle'
